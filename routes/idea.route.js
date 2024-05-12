@@ -18,43 +18,43 @@ const {
   countShareBlog,
   getAllBlogByUser,
 } = require("../controllers/blog.controller")
-const { createResource, getResource, allResources, updateResource, deleteResource } = require("../controllers/resource.controller")
+const { createIdea, getIdea, allIdeas, updateIdea, deleteIdea } = require("../controllers/idea.controller")
 const router = express.Router()
 
 // param
 router.param("userId", getUserById)
-router.param("resourceId", getBlogById)
+router.param("ideaId", getBlogById)
 
-// create resource
+// create idea
 router.post(
-  "/create/resource/:userId",
+  "/create/idea/:userId",
   isSignedIn,
   isAuthenticated,
   upload.single("picture"),
-  createResource
+  createIdea
 )
 
 //get a particular blog
-router.get("/resource/:resourceId", isSignedIn, getResource)
+router.get("/idea/:ideaId", isSignedIn, getIdea)
 
 // all blogs
-router.get("/resources", isSignedIn, allResources)
+router.get("/ideas", isSignedIn, allIdeas)
 
 // update blog
 router.put(
-  "/update/resource/:userId/:resourceId",
+  "/update/idea/:userId/:ideaId",
   isSignedIn,
   isAuthenticated,
   upload.single("picture"),
-  updateResource
+  updateIdea
 )
 
 // delete blog
 router.delete(
-  "/delete/resource/:userId/:resourceId",
+  "/delete/idea/:userId/:ideaId",
   isSignedIn,
   isAuthenticated,
-  deleteResource
+  deleteIdea
 )
 
 // upvote a blog

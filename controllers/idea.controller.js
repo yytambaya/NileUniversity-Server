@@ -1,11 +1,11 @@
-const idea = require("../models/ideas");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 const { getUserById } = require("../controllers/user.controller");
+const Idea = require("../models/Idea");
 
-exports.getideaById = (req, res, next, Id) => {
-  idea.findById(Id)
+exports.getIdeaById = (req, res, next, id) => {
+  Idea.findById(id)
     .populate("user upvotes.user comments.user")
     .exec((err, idea) => {
       if (err) {
@@ -60,32 +60,34 @@ const fileFilter = (req, file, cb) => {
 exports.upload = multer({ storage: storage, fileFilter: fileFilter });
 
 //create idea
-exports.createidea = (req, res) => {
-  const { user, title, link } = req.body;
+exports.createIdea = (req, res) => {
+  const { user, title, content } = req.body;
   var picture;
   if (req.file) {
     picture = req.file.path;
   }
-  const newidea = idea({ user, title, link, picture });
-  newidea.save((err, idea) => {
+  const newIdea = Idea({ user, title, content, picture });
+  newIdea.save((err, idea) => {
     if (err) {
+      console.log(err)
       res.status(400).json({
-        errorMsg: "An error occured",
+        errorMsg: "An error occurred",
       });
     }
+    //console.log(re)
     return res.status(200).json(idea);
   });
 };
 
 // read all ideas
-exports.allideas = (req, res) => {
-  idea.find()
+exports.allIdeas = (req, res) => {
+  Idea.find()
     .populate("user upvotes.user comments.user")
     .sort({ createdAt: -1 })
     .exec((err, ideas) => {
       if (err) {
         res.status(400).json({
-          errorMsg: "An error occured",
+          errorMsg: "An error occurred",
         });
       }
 
@@ -98,8 +100,8 @@ exports.allideas = (req, res) => {
 };
 
 //Read a particular idea
-exports.getidea = (req, res) => {
-  idea.find({ _id: req.ideas._id }).exec((err, idea) => {
+exports.getIdea = (req, res) => {
+  Idea.find({ _id: req.ideas._id }).exec((err, idea) => {
     if (err) {
       res.status(400).json({
         errorMsg: "An error occured",
@@ -110,8 +112,8 @@ exports.getidea = (req, res) => {
 };
 
 // update idea
-exports.updateidea = (req, res) => {
-  idea.findById({ _id: req.ideas._id }).exec((err, idea) => {
+exports.updateIdea = (req, res) => {
+  Idea.findById({ _id: req.ideas._id }).exec((err, idea) => {
     if (idea.picture) {
       let path = idea.picture;
       fs.readdir(path, (err, files) => {
@@ -133,14 +135,14 @@ exports.updateidea = (req, res) => {
   }
   const updateObj = { user, title, link, picture };
 
-  idea.findByIdAndUpdate(
+  Idea.findByIdAndUpdate(
     { _id: req.ideas._id },
     { $set: updateObj },
     { useFindAndModify: false, new: true },
     (err, idea) => {
       if (err || !idea) {
         return res.status(400).json({
-          error: "An error occured,  try again later",
+          error: "An error occurred,  try again later",
         });
       }
       return res.status(200).json(idea);
@@ -149,8 +151,8 @@ exports.updateidea = (req, res) => {
 };
 
 // delete idea
-exports.deleteidea = (req, res) => {
-  idea.findById({ _id: req.ideas._id }).exec((err, idea) => {
+exports.deleteIdea = (req, res) => {
+  Idea.findById({ _id: req.ideas._id }).exec((err, idea) => {
     if (idea.picture) {
       let path = idea.picture;
       fs.readdir(path, (err, files) => {
@@ -165,7 +167,7 @@ exports.deleteidea = (req, res) => {
       });
     }
   });
-  idea.findByIdAndRemove(
+  Idea.findByIdAndRemove(
     { _id: req.ideas._id },
     { useFindAndModify: false, new: true },
     (err, idea) => {
@@ -181,7 +183,7 @@ exports.deleteidea = (req, res) => {
 
 // Upvote a idea
 exports.upvoteidea = (req, res) => {
-  idea.findByIdAndUpdate(
+  Idea.findByIdAndUpdate(
     { _id: req.ideas._id },
     {
       $push: { upvotes: req.profile._id },

@@ -107,7 +107,7 @@ exports.getPoll = (req, res) => {
 }
 
 // Update poll
-exports.updatePoll = (req, res) => {
+{/*exports.updatePoll = (req, res) => {
   Poll.findByIdAndUpdate(
     { _id: req.poll._id },
     { $set: req.body },
@@ -121,8 +121,31 @@ exports.updatePoll = (req, res) => {
       res.status(200).json(poll)
     }
   )
-}
+}*/}
 
+
+exports.updatePoll = (req, res) => {
+  Poll.findById({ _id: req.poll._id }).exec((err, poll) => {
+  });
+  const { user, title, poll } = req.body;
+  
+  const updateObj = { user, title, poll };
+
+  Poll.findByIdAndUpdate(
+    { _id: req.poll._id },
+    { $set: updateObj },
+    { useFindAndModify: false, new: true },
+    (err, poll) => {
+      if (err || !poll) {
+        console.log(err)
+        return res.status(400).json({
+          error: "An error occurred,  try again later",
+        });
+      }
+      return res.status(200).json(poll);
+    }
+  );
+};
 // Delete polls
 exports.deletePoll = (req, res) => {
   Poll.findByIdAndRemove(

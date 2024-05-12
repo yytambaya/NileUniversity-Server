@@ -113,35 +113,20 @@ exports.getResource = (req, res) => {
 // update resource
 exports.updateResource = (req, res) => {
   Resource.findById({ _id: req.resources._id }).exec((err, resource) => {
-    if (resource.picture) {
-      let path = resource.picture;
-      fs.readdir(path, (err, files) => {
-        if (path) {
-          fs.unlink(path, (err) => {
-            if (err) {
-              console.error(err);
-              return;
-            }
-          });
-        }
-      });
-    }
+    
   });
   const { user, title, link } = req.body;
-  var picture;
-  if (req.file) {
-    picture = req.file.path;
-  }
-  const updateObj = { user, title, link, picture };
+  
+  const updateObj = { user, title, link };
 
-  resource.findByIdAndUpdate(
+  Resource.findByIdAndUpdate(
     { _id: req.resources._id },
     { $set: updateObj },
     { useFindAndModify: false, new: true },
     (err, resource) => {
       if (err || !resource) {
         return res.status(400).json({
-          error: "An error occured,  try again later",
+          error: "An error occurred,  try again later",
         });
       }
       return res.status(200).json(resource);
@@ -152,7 +137,7 @@ exports.updateResource = (req, res) => {
 // delete resource
 exports.deleteResource = (req, res) => {
   Resource.findById({ _id: req.resources._id }).exec((err, resource) => {
-    if (resource.picture) {
+    /*if (resource.picture) {
       let path = resource.picture;
       fs.readdir(path, (err, files) => {
         if (path) {
@@ -164,7 +149,7 @@ exports.deleteResource = (req, res) => {
           });
         }
       });
-    }
+    }*/
   });
   Resource.findByIdAndRemove(
     { _id: req.resources._id },
