@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema(
     },
     rollno: {
       type: String,
-      required: true,
+      required: false,
     },
     dob: {
       type: String,
@@ -42,7 +42,7 @@ const userSchema = new mongoose.Schema(
     },
     collegeId: {
       type: String,
-      required: true,
+      required: false,
     },
     encryptedpassword: {
       type: String,

@@ -16,7 +16,7 @@ exports.getUserById = (req, res, next, Id) => {
       }
       if (!user) {
         return res.status(400).json({
-          errorMsg: "User not found",
+          errorMsg: "User not found 555",
         })
       }
       req.profile = user
@@ -119,7 +119,7 @@ exports.getAllUsers = (req, res) => {
       }
       if (!users) {
         return res.status(400).json({
-          errorMsg: "User not found",
+          errorMsg: "User not found 444",
         })
       }
       return res.json(users)

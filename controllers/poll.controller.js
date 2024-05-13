@@ -22,10 +22,12 @@ exports.getPollById = (req, res, next, Id) => {
 exports.createPoll = (req, res) => {
   const { user, title, poll } = req.body
   const newPoll = Poll({ user, title, poll })
+  console.log(req.body)
   newPoll.save((err, poll) => {
     if (err) {
+      console.log(err)
       return res.status(400).json({
-        errorMsg: "An error occured",
+        errorMsg: err,
       })
     }
     res.status(200).json(poll)
