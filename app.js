@@ -30,6 +30,7 @@ app.use("/api/v1", require("./routes/jobs.route"))
 app.use("/api/v1", require("./routes/ad.route"))
 app.use("/api/v1", require("./routes/notice.route"))
 app.use("/api/v1", require("./routes/poll.route"))
+app.use("/api/v1", require("./routes/idea.route"))
 app.use("/api/v1", require("./routes/event.route"))
 app.use("/api/v1", require("./routes/feedback.route"))
 app.get("/", (req, res) => {

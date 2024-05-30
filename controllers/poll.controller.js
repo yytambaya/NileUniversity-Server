@@ -20,8 +20,8 @@ exports.getPollById = (req, res, next, Id) => {
 
 // create poll
 exports.createPoll = (req, res) => {
-  const { user, title, poll } = req.body
-  const newPoll = Poll({ user, title, poll })
+  const { user, title, poll, option1, option2, option3, option4, option5, option6} = req.body
+  const newPoll = Poll({ user, title, poll, option1: {name: option1}, option2: {name: option2}, option3: {name: option3}, option4: {name: option4}, option5: {name: option5}, option6: {name: option6}})
   console.log(req.body)
   newPoll.save((err, poll) => {
     if (err) {
@@ -35,7 +35,7 @@ exports.createPoll = (req, res) => {
 }
 
 // Agree with the poll
-exports.pollYes = (req, res) => {
+exports.pollYes2 = (req, res) => {
   Poll.findByIdAndUpdate(
     { _id: req.body.pollId },
     { $push: { yes: req.profile._id } },
@@ -53,11 +53,30 @@ exports.pollYes = (req, res) => {
   })
 }
 
+exports.pollYes = (req, res) => {
+  const option = req.body.option
+  
+  Poll.findByIdAndUpdate(
+    { _id: req.body.pollId },
+    { $push: {[option]: {users: [req.profile._id]}} },
+    { useFindAndModify: false, new: true },
+    (err, poll) => {
+      if (err || !poll) {
+        console.log(err)
+        return res.status(400).json({
+          error: "An error occurred,  try again later",
+        });
+      }
+      return res.status(200).json(poll);
+    }
+  );
+}
+
 // Disagree with the poll
 exports.pollNo = (req, res) => {
   Poll.findByIdAndUpdate(
     { _id: req.body.pollId },
-    { $push: { no: req.profile._id } },
+    { $push: { option1: req.profile._id } },
     {
       new: true,
       useFindAndModify: false,
@@ -162,4 +181,21 @@ exports.deletePoll = (req, res) => {
       res.status(200).json({ message: "Poll has been removed" })
     }
   )
+}
+
+const setPoll = (option) => {
+  if(option == 'option1'){
+
+  }else if (option == 'option2'){
+
+  }else if (option == 'option3'){
+
+  }else if(option == 'option4'){
+
+  }else if(option == 'option5'){
+
+  }else if (option == 'option5'){
+
+  }
+  
 }

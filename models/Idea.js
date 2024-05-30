@@ -15,8 +15,7 @@ const ideaSchema = new mongoose.Schema(
     title: {
       type: String,
       required: true,
-      trim: true,
-      max: 50,
+      trim: true
     },
     content: {
       type: String,

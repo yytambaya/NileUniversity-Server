@@ -32,6 +32,37 @@ const pollSchema = new mongoose.Schema({
       ref: "User",
     },
   ],
+  option1:{
+    name:{ type: String },
+    users: [],
+    votes:{ type: Number },
+  },
+  option2:{
+    name:{ type: String },
+    users: [],
+    votes:{ type: Number },
+  },
+  option3:{
+    name:{ type: String },
+    users: [],
+    votes:{ type: Number },
+  },
+  option4:{
+    name:{ type: String },
+    users: [],
+    votes:{ type: Number },
+  },
+  option5:{
+    name:{ type: String },
+    users: [],
+    votes:{ type: Number },
+  },
+  option6:{
+    name:{ type: String },
+    users: [],
+    votes:{ type: Number },
+  },
+  
 })
 
 module.exports = mongoose.model("Poll", pollSchema)

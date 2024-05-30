@@ -72,6 +72,7 @@ exports.createIdea = (req, res) => {
       console.log(err)
       res.status(400).json({
         errorMsg: "An error occurred",
+        log: err
       });
     }
     //console.log(re)
@@ -113,7 +114,7 @@ exports.getIdea = (req, res) => {
 
 // update idea
 exports.updateIdea = (req, res) => {
-  Idea.findById({ _id: req.ideas._id }).exec((err, idea) => {
+  Idea.findById({ _id: req.idea._id }).exec((err, idea) => {
     if (idea.picture) {
       let path = idea.picture;
       fs.readdir(path, (err, files) => {
@@ -133,7 +134,7 @@ exports.updateIdea = (req, res) => {
   if (req.file) {
     picture = req.file.path;
   }
-  const updateObj = { user, title, link, picture };
+  const updateObj = { user, title, content, picture };
 
   Idea.findByIdAndUpdate(
     { _id: req.ideas._id },
@@ -152,7 +153,7 @@ exports.updateIdea = (req, res) => {
 
 // delete idea
 exports.deleteIdea = (req, res) => {
-  Idea.findById({ _id: req.ideas._id }).exec((err, idea) => {
+  Idea.findById({ _id: req.idea._id }).exec((err, idea) => {
     if (idea.picture) {
       let path = idea.picture;
       fs.readdir(path, (err, files) => {
@@ -173,7 +174,7 @@ exports.deleteIdea = (req, res) => {
     (err, idea) => {
       if (err || !idea) {
         return res.status(400).json({
-          error: "An error occured,  try again later",
+          error: "An error occurred,  try again later",
         });
       }
       return res.status(200).json({ message: "idea has been deleted" });
